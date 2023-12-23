@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <title>Sign Up</title>
   </head>
   <body>
     <h1>Sign Up</h1>
@@ -15,7 +16,7 @@
     </form>
     <% if (errors) { %>
       <% errors.forEach(function(error) { %>
-        <p><%= error %></p>
+        <p class="text-red-600"><%= error %></p>
       <% }); %>
     <% } %>
   </body>

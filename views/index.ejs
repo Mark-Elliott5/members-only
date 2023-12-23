@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <title>Welcome</title>
   </head>
   <body>
     <% if (locals.currentUser) {%>
@@ -19,5 +20,10 @@
     </form>
     <a href="/sign-up">Sign up</a>
     <%}%>
+    <% if (errors) { %>
+      <% errors.forEach(function(error) { %>
+        <p class="text-red-600"><%= error %></p>
+      <% }); %>
+    <% } %>
   </body>
 </html>

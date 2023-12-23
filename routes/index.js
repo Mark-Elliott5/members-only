@@ -1,14 +1,20 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const flash = require('connect-flash');
+const { formatDistanceToNow } = require('date-fns');
+const Filter = require('bad-words');
+const asyncHandler = require('express-async-handler');
 const User = require('../models/user');
+const Message = require('../models/message');
 
 const router = express.Router();
 
+const filter = new Filter();
+
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('index', { title: 'Express' });
+  const errors = req.flash('errors');
+  res.render('index', { errors });
 });
 
 router.get('/sign-up', (req, res) => {
@@ -57,6 +63,48 @@ router.get('/log-out', (req, res, next) => {
     }
     res.redirect('/');
   });
+});
+
+router.get(
+  '/message-board',
+  asyncHandler(async (req, res, next) => {
+    const messages = await Message.find({}).sort({ date: 1 }).exec();
+    res.render('messageboard', {
+      messages,
+      currentUser: req.user || null,
+      formatDate: formatDistanceToNow,
+    });
+  })
+);
+
+router.get('/add-message', (req, res, next) => {
+  if (!req.user) {
+    req.flash('errors', 'You must be logged in to add a message.');
+    return res.redirect('/');
+  }
+  const errors = req.flash('errors');
+  res.render('addmessage', { errors });
+});
+
+router.post('/add-message', async (req, res, next) => {
+  if (!req.user) {
+    req.flash('errors', 'You must be logged in to add a message.');
+    return res.redirect('/');
+  }
+  const currentTime = new Date();
+  const filteredText = req.body.text ? filter.clean(req.body.text) : '';
+  const user = req.user.username;
+  if (filteredText === '') {
+    req.flash('errors', 'Text cannot be blank.');
+    return res.redirect('/add-message');
+  }
+  const newMessage = new Message({
+    content: filteredText,
+    user,
+    date: currentTime,
+  });
+  await newMessage.save();
+  res.redirect('/');
 });
 
 module.exports = router;

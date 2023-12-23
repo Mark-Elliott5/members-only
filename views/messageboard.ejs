@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Message Board</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body class="bg-slate-800 text-white flex flex-col justify-center items-center">
+    <h1>Message Board</h1>
+    <div id="message-board-wrapper">
+      <% for( let i = 0; i < messages.length; i++ ) { %>
+      <div
+        class="message border-bottom border-radius-8 twelve-px-padding-bottom"
+      >
+        <p class="bold"><%= currentUser ? messages[i].user : 'Anonymous' %>:</p>
+        <p class="twelve-px-margin-left"><%= messages[i].content %></p>
+        <div>
+          <span class="time-distance faded twelve-px-margin-left">
+            <%= formatDate(messages[i].date) %> ago
+          </span>
+          <span class="date italic faded">
+            (<%=messages[i].date.getMonth()+1 %>/<%=
+            messages[i].date.getDate() %>/<%= messages[i].date.getFullYear()
+            %>)
+          </span>
+        </div>
+      </div>
+      <% } %>
+    </div>
+    <a href="/add-message"
+      ><button class="twelve-px-margin" id="add-message">
+        Add new message
+      </button></a
+    >
+  </body>
+</html>

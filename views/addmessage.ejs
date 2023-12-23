@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Message</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div id="form-wrapper" class="center">
+        <form
+          id="message-form"
+          class="flex column percent-width"
+          method="POST"
+          action="/add-message"
+        >
+          <label for="user">Name</label>
+          <input
+            name="user"
+            id="user"
+            type="text"
+            maxlength="20"
+            minlength="2"
+            required
+          />
+          <label for="message">Message</label>
+          <textarea
+            name="text"
+            id="message"
+            rows="4"
+            cols="40"
+            maxlength="140"
+            minlength="1"
+            required
+          ></textarea>
+          <button type="submit">Submit message</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
