@@ -3,6 +3,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const nconf = require('nconf');
+const flash = require('connect-flash');
 const User = require('../models/user');
 
 const configureAuthentication = (app) => {
@@ -17,6 +18,7 @@ const configureAuthentication = (app) => {
       saveUninitialized: true,
     })
   );
+  app.use(flash());
 
   passport.use(
     new LocalStrategy(async (username, password, done) => {

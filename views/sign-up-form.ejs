@@ -13,5 +13,10 @@
       <input name="password" type="password" />
       <button>Sign Up</button>
     </form>
+    <% if (errors) { %>
+      <% errors.forEach(function(error) { %>
+        <p><%= error %></p>
+      <% }); %>
+    <% } %>
   </body>
 </html>
