@@ -18,7 +18,11 @@
         "ecmaVersion": "latest"
     },
     "rules": {
+        "no-use-before-define": "off",
         "no-unused-vars": "warn",
+        "no-underscore-dangle": "off",
+        "consistent-return": "warn",
+        "func-names":"off",
         "prettier/prettier": [
             "error",
             {
