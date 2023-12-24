@@ -26,10 +26,33 @@
       </div>
       <% } %>
     </div>
-    <a href="/add-message"
-      ><button class="twelve-px-margin" id="add-message">
+    <a href="/add-message">
+      <button class="twelve-px-margin" id="add-message">
         Add new message
-      </button></a
-    >
+      </button>
+    </a>
+    <button id="toggleLoginButton" onClick="toggleForm">Sign in</button>
+    <form id="login-form" action="/log-in" method="POST">
+      <label for="username">Username</label>
+      <input name="username" placeholder="username" type="text" />
+      <label for="password">Password</label>
+      <input name="password" type="password" />
+      <button>Sign in</button>
+    </form>
+    <% if (errors) { %>
+      <% errors.forEach(function(error) { %>
+        <p class="bg-red-500 rounded-xl px-2.5 py-1 my-2"><%= error %></p>
+      <% }); %>
+    <% } %>
+
+    <script>
+      function toggleForm() {
+        const loginButton = document.getElementById('toggleLoginButton');
+        const loginForm = document.getElementById('login-form');
+        
+        loginButton.style.display = 'none';
+        loginForm.style.display = 'block';
+      }
+    </script>
   </body>
 </html>
