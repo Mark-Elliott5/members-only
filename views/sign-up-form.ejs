@@ -5,18 +5,22 @@
     <link rel="stylesheet" href="/stylesheets/style.css" />
     <title>Sign Up</title>
   </head>
-  <body>
+  <body class="bg-slate-800 text-white flex flex-col items-center">
     <h1>Sign Up</h1>
-    <form action="" method="POST">
-      <label for="username">Username</label>
-      <input name="username" placeholder="username" type="text" />
-      <label for="password">Password</label>
-      <input name="password" type="password" />
-      <button>Sign Up</button>
+    <form class="text-center" action="" method="POST">
+      <div class="flex justify-between gap-2 my-2">
+        <!-- <label for="username">Username</label> -->
+        <input class="text-black px-1" name="username" placeholder="Username" type="text" />
+      </div>
+      <div class="flex justify-between gap-2 my-2">
+        <!-- <label for="password">Password</label> -->
+        <input class="text-black px-1" name="password" placeholder="Password" type="password" />
+      </div>
+      <button class="self-center">Sign Up</button>
     </form>
     <% if (errors) { %>
       <% errors.forEach(function(error) { %>
-        <p class="text-red-600"><%= error %></p>
+        <p class="bg-red-500 rounded-xl px-2.5 py-1 my-2"><%= error %></p>
       <% }); %>
     <% } %>
   </body>

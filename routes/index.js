@@ -69,10 +69,12 @@ router.get(
   '/message-board',
   asyncHandler(async (req, res, next) => {
     const messages = await Message.find({}).sort({ date: 1 }).exec();
+    const errors = req.flash('errors');
     res.render('messageboard', {
       messages,
       currentUser: req.user || null,
       formatDate: formatDistanceToNow,
+      errors,
     });
   })
 );
