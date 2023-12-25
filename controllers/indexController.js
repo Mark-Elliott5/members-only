@@ -3,10 +3,50 @@ const passport = require('passport');
 const { formatDistanceToNow } = require('date-fns');
 const Filter = require('bad-words');
 const asyncHandler = require('express-async-handler');
+const { body, validationResult } = require('express-validator');
 const User = require('../models/user');
 const Message = require('../models/message');
 
 const filter = new Filter();
+
+const signUpValidationFunctions = [
+  body('username')
+    .exists()
+    .notEmpty()
+    .withMessage('Username must not be empty.')
+    .isString()
+    .withMessage('Username must be a string')
+    .not()
+    .contains(/\s/)
+    .withMessage('Username must not contain whitespace characters.')
+    .trim()
+    .matches(/^[a-zA-Z0-9\-._]+$/)
+    .withMessage(
+      'Username must only contain alphanumeric characters, periods, underscores, and/or hyphens'
+    )
+    .isLength({ min: 1, max: 100 })
+    .withMessage('Username must be 1-100 characters in length.')
+    .escape(),
+  body('password')
+    .exists()
+    .notEmpty()
+    .withMessage('Password must not be empty.')
+    .isString()
+    .withMessage('Password must be a string')
+    .not()
+    .contains(/\s/)
+    .withMessage('Password must not contain whitespace characters.')
+    .trim()
+    .matches(/^[a-zA-Z0-9\-._]+$/)
+    .withMessage(
+      'Password must only contain alphanumeric characters, periods, underscores, and/or hyphens'
+    )
+    .isLength({ min: 8, max: 128 })
+    .withMessage('Password must be 8-128 characters in length.')
+    .escape(),
+];
+
+// const errors = validationResult(req);
 
 exports.indexGet = (req, res, next) => {
   const errors = req.flash('errors');
@@ -18,30 +58,36 @@ exports.signUpGet = (req, res, next) => {
   res.render('sign-up-form', { errors });
 };
 
-exports.signUpPost = asyncHandler(async (req, res, next) => {
-  if (req.body.password.length < 8) {
-    req.flash('errors', 'Password must not be shorter than 8 characters.');
-    return res.redirect('/sign-up');
-  }
-  if (req.body.password.length > 128) {
-    req.flash('errors', 'Password must not be longer than 128 characters.');
-    return res.redirect('/sign-up');
-  }
-  bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
-    if (err) {
-      res.redirect('/sign-up');
-    } else {
-      const user = new User({
-        username: req.body.username,
-        password: hashedPassword,
-      });
-      await user
-        .save()
-        .then(() => res.redirect('/'))
-        .catch((error) => next(error));
+exports.signUpPost = [
+  ...signUpValidationFunctions,
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const errorArray = errors.array();
+      for (let i = 0; i < errorArray.length; i += 1) {
+        req.flash('errors', errorArray[i].msg);
+      }
+      return res.redirect('/sign-up');
     }
-  });
-});
+
+    bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+      if (err) {
+        res.redirect('/sign-up');
+      } else {
+        const user = new User({
+          username: req.body.username,
+          password: hashedPassword,
+        });
+        await user
+          .save()
+          .then(() => res.redirect('/'))
+          .catch((error) => next(error));
+      }
+    });
+  }),
+];
 
 exports.logInPost = passport.authenticate('local', {
   successRedirect: '/',
