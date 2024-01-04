@@ -41,6 +41,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 configureAuthentication(app);
+// app.use((req, res, next) => {
+//   res.locals.currentUser = req.user;
+//   next();
+// });
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -49,7 +53,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      'script-src': ["'self'"],
+      scriptSrc: ["'self'", "'/scripts/'", "'localhost'"],
     },
   })
 );

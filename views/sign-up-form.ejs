@@ -18,10 +18,12 @@
       </div>
       <button class="self-center">Sign Up</button>
     </form>
-    <% if (errors) { %>
-      <% errors.forEach(function(error) { %>
-        <p class="bg-red-500 rounded-xl px-2.5 py-1 my-2"><%= error %></p>
-      <% }); %>
+    <% if (error) { %>
+      <div class="bg-red-500 rounded-xl my-2" id="errors">
+        <% error.forEach(function(error) { %>
+          <p class="px-2.5 py-1 my-2"><%= error %></p>
+        <% }); %>
+      </div>
     <% } %>
   </body>
 </html>

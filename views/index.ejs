@@ -20,10 +20,19 @@
     </form>
     <a href="/sign-up">Sign up</a>
     <%}%>
-    <% if (errors) { %>
-      <% errors.forEach(function(error) { %>
-        <p class="text-red-600"><%= error %></p>
-      <% }); %>
+    <% if (error) { %>
+      <div class="bg-red-500 rounded-xl my-2" id="errors">
+        <% error.forEach(function(err) { %>
+          <p class="px-2.5 py-1 my-2"><%= err %></p>
+        <% }); %>
+      </div>
+    <% } %>
+    <% if (success) { %>
+      <div class="bg-green-500 rounded-xl my-2" id="success">
+        <% success.forEach(function(succ) { %>
+          <p class="px-2.5 py-1 my-2"><%= succ %></p>
+        <% }); %>
+      </div>
     <% } %>
   </body>
 </html>

@@ -3,6 +3,7 @@
   <head>
     <title>Message Board</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script defer src="/scripts/messageboard.js"></script>
   </head>
   <body class="bg-slate-800 text-white flex flex-col justify-center items-center">
     <h1>Message Board</h1>
@@ -31,28 +32,46 @@
         Add new message
       </button>
     </a>
-    <button id="toggleLoginButton" onClick="toggleForm">Sign in</button>
-    <form id="login-form" action="/log-in" method="POST">
-      <label for="username">Username</label>
-      <input name="username" placeholder="username" type="text" />
-      <label for="password">Password</label>
-      <input name="password" type="password" />
+    <% if (!locals.currentUser) { %>
+    <button id="toggle-login-button">Sign in</button>
+    <form class="hidden flex-col" id="login-form" action="/log-in" method="POST">
+      <!-- <label for="username">Username</label> -->
+      <input 
+        name="username" 
+        placeholder="Username" 
+        type="text" 
+        autocomplete="username"
+        class="text-black"
+      />
+      <!-- <label for="password">Password</label> -->
+      <input 
+        name="password" 
+        placeholder="Password"
+        type="password" 
+        autocomplete="password"
+        class="text-black"
+      />
       <button>Sign in</button>
     </form>
-    <% if (errors) { %>
-      <% errors.forEach(function(error) { %>
-        <p class="bg-red-500 rounded-xl px-2.5 py-1 my-2"><%= error %></p>
-      <% }); %>
+    <p>Or</p>
+    <a href="/sign-up"><button>Sign up</button></a>
+    <% } else { %>
+      <a href="/log-out"><button>Sign out</button></a>
+    <% } %>
+    <% if (error) { %>
+      <div class="bg-red-500 rounded-xl my-2" id="errors">
+        <% error.forEach(function(err) { %>
+          <p class="px-2.5 py-1 my-2"><%= err %></p>
+        <% }); %>
+      </div>
+    <% } %>
+    <% if (success) { %>
+      <div class="bg-green-500 rounded-xl my-2" id="success">
+        <% success.forEach(function(succ) { %>
+          <p class="px-2.5 py-1 my-2"><%= succ %></p>
+        <% }); %>
+      </div>
     <% } %>
 
-    <script>
-      function toggleForm() {
-        const loginButton = document.getElementById('toggleLoginButton');
-        const loginForm = document.getElementById('login-form');
-        
-        loginButton.style.display = 'none';
-        loginForm.style.display = 'block';
-      }
-    </script>
   </body>
 </html>

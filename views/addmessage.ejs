@@ -6,37 +6,42 @@
     <title>Add Message</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
-  <body>
-    <div id="app">
-      <div id="form-wrapper" class="center">
-        <form
-          id="message-form"
-          class="flex column percent-width"
-          method="POST"
-          action="/add-message"
-        >
-          <label for="user">Name</label>
-          <input
-            name="user"
-            id="user"
-            type="text"
-            maxlength="20"
-            minlength="2"
-            required
-          />
-          <label for="message">Message</label>
-          <textarea
-            name="text"
-            id="message"
-            rows="4"
-            cols="40"
-            maxlength="140"
-            minlength="1"
-            required
-          ></textarea>
-          <button type="submit">Submit message</button>
-        </form>
+  <body
+    class="bg-slate-800 text-white flex flex-col justify-center h-screen items-center"
+  >
+    <p>Posting as: <%= locals.currentUser.username %></p>
+    <form
+      id="message-form"
+      class="flex flex-col"
+      method="POST"
+      action="/add-message"
+    >
+      <textarea
+        name="text"
+        id="message"
+        rows="4"
+        cols="40"
+        maxlength="140"
+        minlength="1"
+        required
+        class="text-black px-1"
+        placeholder="Message"
+      ></textarea>
+      <button type="submit">Submit message</button>
+    </form>
+    <% if (error) { %>
+      <div class="bg-red-500 rounded-xl my-2" id="error">
+        <% error.forEach(function(err) { %>
+          <p class="px-2.5 py-1 my-2"><%= err %></p>
+        <% }); %>
       </div>
-    </div>
+    <% } %>
+    <% if (success) { %>
+      <div class="bg-green-500 rounded-xl my-2" id="success">
+        <% success.forEach(function(succ) { %>
+          <p class="px-2.5 py-1 my-2"><%= succ %></p>
+        <% }); %>
+      </div>
+    <% } %>
   </body>
 </html>
