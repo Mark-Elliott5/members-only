@@ -24,8 +24,8 @@ const signUpValidationFunctions = [
     .withMessage(
       'Username must only contain alphanumeric characters, periods, underscores, and/or hyphens.'
     )
-    .isLength({ min: 1, max: 100 })
-    .withMessage('Username must be 1-100 characters in length.')
+    .isLength({ min: 4, max: 32 })
+    .withMessage('Username must be 4-32 characters in length.')
     .escape(),
   body('password')
     .exists()
@@ -61,11 +61,6 @@ const logInValidationFunctions = [
     .escape(),
 ];
 
-// exports.indexGet = (req, res, next) => {
-//   const error = req.flash('error');
-//   res.render('index', { error });
-// };
-
 exports.signUpGet = (req, res, next) => {
   const error = req.flash('error');
   res.render('sign-up-form', { error });
@@ -96,7 +91,17 @@ exports.signUpPost = [
         await user
           .save()
           .then(() => res.redirect('/'))
-          .catch((err1) => next(err1));
+          .catch((err1) => {
+            console.log(err1);
+            if (err1.code === 11000) {
+              req.flash(
+                'error',
+                'Username already exists. Please sign up with a different username.'
+              );
+              return res.redirect('/sign-up');
+            }
+            next(err1);
+          });
       }
     });
   }),

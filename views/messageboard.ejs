@@ -5,20 +5,20 @@
     <link rel="stylesheet" href="/stylesheets/style.css" />
     <script defer src="/scripts/messageboard.js"></script>
   </head>
-  <body class="bg-slate-800 text-white flex flex-col justify-center items-center">
-    <h1>Message Board</h1>
-    <div id="message-board-wrapper">
+  <body class="bg-slate-800 text-white m-14">
+    <h1 class="text-4xl">Message Board</h1>
+    <div id="message-board-wrapper" class="break-words">
       <% for( let i = 0; i < messages.length; i++ ) { %>
       <div
-        class="message border-bottom border-radius-8 twelve-px-padding-bottom"
+        class="border-b-gray-400 border-b-2 pb-3"
       >
-        <p class="bold"><%= currentUser ? messages[i].user : 'Anonymous' %>:</p>
-        <p class="twelve-px-margin-left"><%= messages[i].content %></p>
+        <p class="font-bold m-2 ml-0"><%= currentUser ? messages[i].user : 'Anonymous' %>:</p>
+        <p class="ml-3"><%= messages[i].content %></p>
         <div>
-          <span class="time-distance faded twelve-px-margin-left">
+          <span class="opacity-50 ml-3">
             <%= formatDate(messages[i].date) %> ago
           </span>
-          <span class="date italic faded">
+          <span class="italic opacity-50">
             (<%=messages[i].date.getMonth()+1 %>/<%=
             messages[i].date.getDate() %>/<%= messages[i].date.getFullYear()
             %>)
@@ -27,51 +27,50 @@
       </div>
       <% } %>
     </div>
-    <a href="/add-message">
-      <button class="twelve-px-margin" id="add-message">
-        Add new message
-      </button>
-    </a>
-    <% if (!locals.currentUser) { %>
-    <button id="toggle-login-button">Sign in</button>
-    <form class="hidden flex-col" id="login-form" action="/log-in" method="POST">
-      <!-- <label for="username">Username</label> -->
-      <input 
-        name="username" 
-        placeholder="Username" 
-        type="text" 
-        autocomplete="username"
-        class="text-black"
-      />
-      <!-- <label for="password">Password</label> -->
-      <input 
-        name="password" 
-        placeholder="Password"
-        type="password" 
-        autocomplete="password"
-        class="text-black"
-      />
-      <button>Sign in</button>
-    </form>
-    <p>Or</p>
-    <a href="/sign-up"><button>Sign up</button></a>
-    <% } else { %>
-      <a href="/log-out"><button>Sign out</button></a>
-    <% } %>
-    <% if (error) { %>
-      <div class="bg-red-500 rounded-xl my-2" id="errors">
-        <% error.forEach(function(err) { %>
-          <p class="px-2.5 py-1 my-2"><%= err %></p>
-        <% }); %>
-      </div>
-    <% } %>
-    <% if (success) { %>
-      <div class="bg-green-500 rounded-xl my-2" id="success">
-        <% success.forEach(function(succ) { %>
-          <p class="px-2.5 py-1 my-2"><%= succ %></p>
-        <% }); %>
-      </div>
-    <% } %>
-
+    <div class="flex flex-col m-3">
+      <% if (!locals.currentUser) { %>
+      <a id="toggle-login-button" class="mb-1 cursor-pointer">Sign in to add new message and view usernames</a>
+      <form class="hidden flex-col" id="login-form" action="/log-in" method="POST">
+        <input 
+          name="username" 
+          placeholder="Username" 
+          type="text" 
+          autocomplete="username"
+          class="text-black"
+        />
+        <input 
+          name="password" 
+          placeholder="Password"
+          type="password" 
+          autocomplete="password"
+          class="text-black"
+        />
+        <button>Sign in</button>
+      </form>
+      <p class="mb-1">Or</p>
+      <a class="cursor-pointer" href="/sign-up"><button>Sign up</button></a>
+      <% } else { %>
+        <a href="/add-message">
+          <button class="mb-1" id="add-message">
+            Add new message
+          </button>
+        </a>
+        <a href="/log-out"><button>Sign out</button></a>
+      <% } %>
+      <% if (error) { %>
+        <div class="bg-red-500 rounded-xl my-2" id="errors">
+          <% error.forEach(function(err) { %>
+            <p class="px-2.5 py-1 my-2"><%= err %></p>
+          <% }); %>
+        </div>
+      <% } %>
+      <% if (success) { %>
+        <div class="bg-green-500 rounded-xl my-2" id="success">
+          <% success.forEach(function(succ) { %>
+            <p class="px-2.5 py-1 my-2"><%= succ %></p>
+          <% }); %>
+        </div>
+      <% } %>
+    </div>
   </body>
 </html>
