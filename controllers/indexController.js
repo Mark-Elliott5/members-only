@@ -120,13 +120,12 @@ exports.logInPost = [
       }
       return res.redirect(req.header('Referer'));
     }
-    req.flash('success', 'logged in');
     next();
   },
 
   passport.authenticate('local', {
     successRedirect: '/',
-    successFlash: 'Login Successful!',
+    successFlash: 'Login successful!',
     failureRedirect: '/',
     failureFlash: 'Username or password incorrect.',
   }),
@@ -145,7 +144,6 @@ exports.messageBoardGet = asyncHandler(async (req, res, next) => {
   const messages = await Message.find({}).sort({ date: 1 }).exec();
   const error = req.flash('error');
   const success = req.flash('success');
-  console.log(success);
   res.render('messageboard', {
     messages,
     currentUser: req.user || null,

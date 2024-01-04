@@ -43,7 +43,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      scriptSrc: ["'self'", "'/scripts/'", "'localhost'"],
+      scriptSrc: ["'self'"],
     },
   })
 );

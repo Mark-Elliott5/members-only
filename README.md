@@ -10,3 +10,5 @@ This Member's Only project features:
 - Passport user authentication
 
 This project allows users to sign up using a unique username and post a message to the message board. Users can only see the usernames of messages if they are signed in.
+
+![Member's Only](images/membersonly.png)
